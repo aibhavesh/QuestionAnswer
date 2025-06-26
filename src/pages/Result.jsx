@@ -22,7 +22,16 @@ const Result = () => {
     answers.forEach((ans, idx) => {
       const qIndex = sortedQueArr[idx];
       const q = queArr[qIndex];
-      if (q && ans === q.correctAnswer) correct += 1;
+      // Console log for debugging
+      console.log(`User answer: "${ans}" | Correct: "${q?.answer}"`);
+      if (
+        q &&
+        ans &&
+        q.answer &&
+        ans.trim().toLowerCase() === q.answer.trim().toLowerCase()
+      ) {
+        correct += 1;
+      }
     });
     setScore(correct);
   }, [answers, queArr, sortedQueArr]);
@@ -50,13 +59,17 @@ const Result = () => {
           {answers.map((ans, idx) => {
             const qIndex = sortedQueArr[idx];
             const q = queArr[qIndex];
-            const correct = q && ans === q.correctAnswer;
+            const isCorrect =
+              q &&
+              ans &&
+              q.answer &&
+              ans.trim().toLowerCase() === q.answer.trim().toLowerCase();
             return (
               <li
                 key={idx}
                 className="result-item"
                 style={{
-                  borderLeft: `6px solid ${correct ? "#2e7d32" : "#d32f2f"}`
+                  borderLeft: `6px solid ${isCorrect ? "#2e7d32" : "#d32f2f"}`
                 }}
               >
                 <div>
@@ -64,12 +77,18 @@ const Result = () => {
                 </div>
                 <div>
                   Your Answer:{" "}
-                  <span className={correct ? "result-correct" : "result-wrong"}>
+                  <span className={isCorrect ? "result-correct" : "result-wrong"}>
                     {ans || "No answer"}
                   </span>
-                  {!correct && q && (
+                  {" "}
+                  {isCorrect ? (
+                    <span style={{ color: "#2e7d32", fontWeight: "bold", marginLeft: 8 }}>✔️</span>
+                  ) : (
+                    <span style={{ color: "#d32f2f", fontWeight: "bold", marginLeft: 8 }}>❌</span>
+                  )}
+                  {!isCorrect && q && (
                     <span>
-                      {" "} | Correct: <span className="result-correct">{q.correctAnswer}</span>
+                      {" "} | Correct: <span className="result-correct">{q.answer}</span>
                     </span>
                   )}
                 </div>
