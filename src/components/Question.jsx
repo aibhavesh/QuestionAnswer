@@ -1,35 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import '../assets/Question.css';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Question = () => {
   const queArr = useSelector((state) => state.QueReducer);
   const sortedQueArr = useSelector((state) => state.SortedQueReducer);
+  const navigate = useNavigate();
 
   const [current, setCurrent] = useState(0);
   const [que, setQue] = useState(null);
   const [animating, setAnimating] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
+  const [answers, setAnswers] = useState([]);
+  // showResult is not needed if you route to /result
 
   useEffect(() => {
-    if (sortedQueArr && queArr && sortedQueArr.length > 0 && queArr.length > 0) {
-      const index = sortedQueArr[current];
-      setQue(queArr[index]);
-      setSelectedOption(''); // reset selection on question change
+    if (sortedQueArr?.length > 0) {
+      setAnswers(Array(sortedQueArr.length).fill(null));
     }
-  }, [current, sortedQueArr, queArr]);
+  }, [sortedQueArr]);
 
-  if (!que) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    if (sortedQueArr && queArr && current < sortedQueArr.length) {
+      const index = sortedQueArr[current];
+      setQue(queArr?.[index]);
+      setSelectedOption(answers[current] || '');
+    }
+  }, [current, sortedQueArr, queArr, answers]);
 
-  const totalQuestions = sortedQueArr.length;
-  const progress = Math.round(((current + 1) / totalQuestions) * 100);
+  const handleSave = () => {
+    const newAnswers = [...answers];
+    console.log(newAnswers);
+    newAnswers[current] = selectedOption;
+    setAnswers(newAnswers);
+  };
 
   const handleNext = () => {
     setAnimating(true);
     setTimeout(() => {
-      setCurrent((prev) => Math.min(prev + 1, totalQuestions - 1));
+      setCurrent((prev) => Math.min(prev + 1, sortedQueArr.length - 1));
       setAnimating(false);
     }, 500);
   };
@@ -42,82 +52,58 @@ const Question = () => {
     }, 500);
   };
 
+  const handleSubmit = () => {
+    navigate('/result', {
+      state: {
+        answers,
+        sortedQueArr,
+        queArr,
+      }
+    });
+  };
+
+  if (!que) return <div className="loading">Loading Questions...</div>;
+
+  const totalQuestions = sortedQueArr.length;
+  const progress = Math.round(((current + 1) / totalQuestions) * 100);
+  const isLastQuestion = current === totalQuestions - 1;
+
   return (
     <div className="question-container">
-      {/* Background circles */}
-      <div className="background-circle" style={{ top: '5%', left: '10%', width: '150px', height: '150px', background: '#81c784' }} />
-      <div className="background-circle" style={{ bottom: '15%', right: '8%', width: '200px', height: '200px', background: '#aed581' }} />
-      <div className="background-circle" style={{ top: '50%', left: '40%', width: '100px', height: '100px', background: '#4db6ac' }} />
+      <div className="background-circle" style={{ top: '5%', left: '10%' }} />
+      <div className="background-circle" style={{ bottom: '15%', right: '8%' }} />
+      <div className="background-circle" style={{ top: '50%', left: '40%' }} />
 
-      <div className="container py-5" style={{ position: 'relative', zIndex: 2 }}>
+      <div className="container py-5">
         <div className="row justify-content-center">
           <div className="col-md-8">
-            {/* Progress Bar */}
             <div className="mb-4">
               <div className="d-flex justify-content-between mb-1 text-success fw-semibold">
                 <span>Question {current + 1}</span>
                 <span>{progress}%</span>
               </div>
               <div className="progress progress-bar-custom">
-                <div
-                  className="progress-bar bg-success"
-                  role="progressbar"
-                  style={{ width: `${progress}%` }}
-                />
+                <div className="progress-bar bg-success" style={{ width: `${progress}%` }} />
               </div>
             </div>
 
-            {/* Question Card */}
-            <div className={`question-card shadow-lg rounded-4 border-0 ${animating ? 'fade-out' : 'fade-in'}`}>
+            <div className={`question-card ${animating ? 'fade-out' : 'fade-in'}`}>
               <div className="card-body p-5">
-                <h5 className="card-title mb-4 text-dark fw-bold fs-4">
-                  {que.question}
-                </h5>
+                <h5 className="card-title mb-4">{que?.question || "Question not found"}</h5>
                 <form>
-                  <label className={`option-label ${selectedOption === 'A' ? 'highlighted' : ''}`}>
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="option"
-                      value="A"
-                      checked={selectedOption === 'A'}
-                      onChange={() => setSelectedOption('A')}
-                    />
-                    <span className="option-text">A. {que.A}</span>
-                  </label>
-                  <label className={`option-label ${selectedOption === 'B' ? 'highlighted' : ''}`}>
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="option"
-                      value="B"
-                      checked={selectedOption === 'B'}
-                      onChange={() => setSelectedOption('B')}
-                    />
-                    <span className="option-text">B. {que.B}</span>
-                  </label>
-                  <label className={`option-label ${selectedOption === 'C' ? 'highlighted' : ''}`}>
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="option"
-                      value="C"
-                      checked={selectedOption === 'C'}
-                      onChange={() => setSelectedOption('C')}
-                    />
-                    <span className="option-text">C. {que.C}</span>
-                  </label>
-                  <label className={`option-label ${selectedOption === 'D' ? 'highlighted' : ''}`}>
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="option"
-                      value="D"
-                      checked={selectedOption === 'D'}
-                      onChange={() => setSelectedOption('D')}
-                    />
-                    <span className="option-text">D. {que.D}</span>
-                  </label>
+                  {['A', 'B', 'C', 'D'].map((option) => (
+                    <label key={option} className={`option-label ${selectedOption === option ? 'highlighted' : ''}`}>
+                      <input
+                        type="radio"
+                        name="option"
+                        value={option}
+                        checked={selectedOption === option}
+                        onChange={() => setSelectedOption(option)}
+                      />
+                      <span className="option-text">{option}. {que?.[option]}</span>
+                    </label>
+                  ))}
+                  
                   <div className="d-flex justify-content-between mt-4">
                     <button
                       type="button"
@@ -131,17 +117,18 @@ const Question = () => {
                       <button
                         type="button"
                         className="btn btn-success me-2 btn-quiz"
-                        disabled={animating}
+                        onClick={handleSave}
+                        disabled={answers[current] === selectedOption || !selectedOption}
                       >
-                        Save
+                        {answers[current] ? 'Updated ✓' : 'Save Answer'}
                       </button>
                       <button
                         type="button"
-                        className="btn btn-primary btn-quiz"
-                        onClick={handleNext}
-                        disabled={current === totalQuestions - 1 || animating}
+                        className={`btn ${isLastQuestion ? 'btn-warning' : 'btn-primary'} btn-quiz`}
+                        onClick={isLastQuestion ? handleSubmit : handleNext}
+                        disabled={animating}
                       >
-                        Next ➡️
+                        {isLastQuestion ? 'Submit Final Answers 🚀' : 'Next ➡️'}
                       </button>
                     </div>
                   </div>

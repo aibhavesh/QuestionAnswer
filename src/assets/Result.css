@@ -1,0 +1,152 @@
+/* Result.css */
+.result-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.answers-review {
+  margin-top: 2rem;
+}
+
+.answer-item {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  background: #f8f9fa;
+  border-left: 4px solid #2196F3;
+}
+
+.answer-item p {
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+
+/* Question.css */
+.loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.5rem;
+  color: #4a5568;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border-radius: 0.5rem;
+  background: #f8fafc;
+  border: 2px solid #cbd5e0;
+  transition: all 0.2s ease;
+}
+
+.option-label.highlighted {
+  border-color: #4299e1;
+  background: #ebf8ff;
+}
+
+.option-label:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.option-text {
+  margin-left: 1rem;
+  font-size: 1.1rem;
+}
+
+.btn-quiz {
+  min-width: 120px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+/* Result.css */
+.result-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.celebration-banner {
+  text-align: center;
+  padding: 3rem;
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+}
+
+.score-display {
+  font-size: 2.5rem;
+  color: #2d3748;
+  margin: 1rem 0;
+}
+
+.performance-message {
+  font-size: 1.25rem;
+  color: #4a5568;
+}
+
+.result-card {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.result-card.correct {
+  border-left: 4px solid #48bb78;
+}
+
+.result-card.incorrect {
+  border-left: 4px solid #f56565;
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-weight: 600;
+}
+
+.status-badge.correct {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.status-badge.incorrect {
+  background: #fed7d7;
+  color: #742a2a;
+}
+
+.answer-comparison {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.user-answer, .correct-answer {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.user-answer {
+  background: #ebf8ff;
+}
+
+.correct-answer {
+  background: #f0fff4;
+}
