@@ -1,81 +1,161 @@
-QuestionAnswer
-Project Overview
-QuestionAnswer is a minimalistic React frontend project set up with Vite to provide a fast and modern web development experience. It aims to enable quick development of question and answer-based interfaces with hot module replacement (HMR) for efficient development cycles. This starter template uses ESLint to maintain code quality and consistency.
+# QuesAns
 
-Features
-React with Vite for fast development and optimized builds
+A fun, interactive trivia quiz web application built with **React**, **Vite**, and **Redux Toolkit**. QuesAns randomly selects 10 questions from a bank of 500+ multiple-choice trivia questions, lets you navigate through them at your own pace, and shows a detailed results page at the end.
 
-Hot Module Replacement for instant feedback during development
+---
 
-ESLint integration to enforce best coding practices
+## ✨ Features
 
-Simple and scalable structure to build question-answer UIs or applications
+- 🎲 **Random 10-question quiz** drawn from a pool of 500+ questions every time you play
+- 📋 **Multiple-choice format** — four options (A / B / C / D) per question
+- 🔄 **Free navigation** — move forwards and backwards between questions
+- 💾 **Save & update answers** before you submit
+- 📊 **Progress bar** shows how far through the quiz you are
+- 🏆 **Results page** displays your score and highlights correct/incorrect answers
+- 🌿 **Green-themed UI** with smooth animations and Bootstrap 5 components
+- 🔗 **Client-side routing** via React Router DOM
 
-Tech Stack
-React: A powerful JavaScript library for building user interfaces, allowing component-based architecture and efficient rendering.
+---
 
-Vite: A lightning-fast frontend tooling and build tool that uses native ES modules and provides fast hot module replacement.
+## 🛠️ Tech Stack
 
-JavaScript (ES6+): The primary programming language used for application logic.
+| Technology | Purpose |
+|---|---|
+| [React 19](https://react.dev/) | UI component library |
+| [Vite 6](https://vitejs.dev/) | Lightning-fast dev server & bundler |
+| [Redux Toolkit](https://redux-toolkit.js.org/) | Global state management (question bank & session) |
+| [React Router DOM v7](https://reactrouter.com/) | Client-side navigation |
+| [Bootstrap 5.3](https://getbootstrap.com/) | Responsive layout & pre-built components |
+| [Axios](https://axios-http.com/) | HTTP client (available for API integration) |
+| [react-confetti](https://www.npmjs.com/package/react-confetti) | Celebration animation |
+| ESLint (flat config) | Code quality & linting |
 
-CSS: Styling the components and layout of the application.
+---
 
-HTML: Markup for the web pages.
+## 📁 Project Structure
 
-ESLint: A pluggable linter tool for identifying and reporting on patterns in JavaScript, ensuring code quality.
+```
+QuestionAnswer/
+├── public/                  # Static assets
+├── src/
+│   ├── assets/              # CSS files (Question.css, etc.)
+│   ├── components/
+│   │   └── Question.jsx     # Quiz question card with options & navigation
+│   ├── db/
+│   │   └── Que.jsx          # Local database of 500+ trivia questions
+│   ├── pages/
+│   │   ├── Body.jsx         # Home / landing page
+│   │   ├── Header.jsx       # Navigation bar
+│   │   ├── Footer.jsx       # Page footer
+│   │   ├── Aboutus.jsx      # About page
+│   │   └── Result.jsx       # Score & answer review page
+│   ├── Redux/
+│   │   ├── QueSlice.jsx     # Redux slice — full question bank
+│   │   └── SortedQueSlice.jsx # Redux slice — 10 random indices for the session
+│   ├── App.jsx              # Root component with route definitions
+│   └── main.jsx             # App entry point (ReactDOM + Redux Provider)
+├── index.html
+├── vite.config.js
+├── eslint.config.js
+└── package.json
+```
 
-Getting Started
-Prerequisites
-Node.js (recommended latest LTS version)
+---
 
-npm or yarn package manager
+## 🚀 Getting Started
 
-Installation
-Clone the repository:
+### Prerequisites
 
-text
-git clone https://github.com/aibhavesh/QuestionAnswer.git
-Navigate to the project directory:
+- **Node.js** (LTS version recommended — v18 or newer)
+- **npm** or **yarn**
 
-text
-cd QuestionAnswer
-Install dependencies:
+### Installation
 
-text
-npm install
-or
+1. **Clone the repository:**
 
-text
-yarn install
-Start the development server:
+   ```bash
+   git clone https://github.com/aibhavesh/QuestionAnswer.git
+   cd QuestionAnswer
+   ```
 
-text
-npm run dev
-or
+2. **Install dependencies:**
 
-text
-yarn dev
-Open the app in your browser at http://localhost:3000 (or the port shown in the terminal).
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-Scripts
-dev: Runs the app in development mode with HMR.
+3. **Start the development server:**
 
-build: Bundles the app for production.
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-preview: Serves the production build locally.
+4. **Open the app** in your browser at `http://localhost:5173` (Vite's default port — the terminal will confirm the exact URL).
 
-lint: Runs ESLint checks on the codebase.
+---
 
-Customization
-Add or configure ESLint rules in .eslintrc file as needed.
+## 📜 Available Scripts
 
-Extend the template with TypeScript by following official Vite+React TypeScript templates.
+| Script | Description |
+|---|---|
+| `npm run dev` | Starts the development server with Hot Module Replacement |
+| `npm run build` | Bundles the app for production into the `dist/` folder |
+| `npm run preview` | Serves the production build locally for testing |
+| `npm run lint` | Runs ESLint across the entire codebase |
 
-Customize the React components under the src directory to suit your needs.
+---
 
-Contribution
-Contributions and suggestions are welcome! Feel free to open issues or submit pull requests.
+## 🗺️ Application Routes
 
-License
+| Path | Component | Description |
+|---|---|---|
+| `/` | `Body` | Home / landing page with "Let's Practice" button |
+| `/questions` | `Question` | Quiz interface — 10 randomly selected questions |
+| `/result` | `Result` | Score summary with correct/incorrect breakdown |
+| `/about` | `AboutUs` | About page |
+| `*` | — | 404 Not Found fallback |
+
+---
+
+## 🧩 How It Works
+
+1. On the **Home** page, clicking **"Let's Practice"** dispatches 10 unique random indices to the Redux store (`SortedQueSlice`).
+2. The **Question** page reads those indices from the store, loads the corresponding questions, and renders them one at a time.
+3. You can **save** your answer for each question and navigate freely with the **Previous / Next** buttons.
+4. On the last question, clicking **Submit Final Answers** navigates to the **Results** page, which computes and displays your final score along with a per-question breakdown.
+
+---
+
+## 🛠️ Customization
+
+- **Add or modify questions** — edit `src/db/Que.jsx`. Each entry follows this schema:
+  ```js
+  {
+    question: "Your question here?",
+    A: "Option A",
+    B: "Option B",
+    C: "Option C",
+    D: "Option D",
+    answer: "A" // correct option letter
+  }
+  ```
+- **Change the number of questions per quiz** — update the `while (arr.length < 10)` condition in `src/pages/Body.jsx`.
+- **Adjust ESLint rules** — edit `eslint.config.js` (flat config format).
+- **Migrate to TypeScript** — follow the official [Vite + React + TypeScript guide](https://vitejs.dev/guide/#scaffolding-your-first-vite-project).
+
+---
+
+## 🤝 Contributing
+
+Contributions, bug reports, and feature suggestions are welcome! Please open an issue or submit a pull request.
+
+---
+
+## 📄 License
+
 This project is open source and free to use.
 
